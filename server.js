@@ -4,6 +4,8 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const crypto = require('crypto');
+const fs = require('fs');
+require('dotenv').config();
 
 const app = express();
 app.use(cors({
@@ -40,6 +42,25 @@ db.connect((err) => {
     }
     console.log("Connected to database");
 });
+
+// Akses SSH key dari environment variable
+const sshPrivateKey = process.env.SSH_PRIVATE_KEY;
+
+// Jika Anda perlu menggunakan SSH key untuk operasi tertentu
+function useSSHKey() {
+    if (!sshPrivateKey) {
+        console.error('SSH key not found in environment variables');
+        return;
+    }
+    
+    // Contoh: Simpan ke file temporary jika diperlukan untuk operasi tertentu
+    // fs.writeFileSync('./temp_key', sshPrivateKey, {mode: 0o600});
+    
+    // Lakukan operasi yang membutuhkan SSH key
+    
+    // Hapus file temporary jika sudah dibuat
+    // fs.unlinkSync('./temp_key');
+}
 
 app.post('/login', (req, res) => {
     // Hash the incoming password
